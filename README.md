@@ -1,76 +1,65 @@
-#  API REST de Facturación (Maestro–Detalle)
+#  API REST de Gestión de Facturas (Maestro–Detalle)
 
-Este proyecto implementa una **API REST** para gestionar **facturas y sus detalles de productos** utilizando una estructura **maestro–detalle**, desarrollada con **Node.js**, **Express** y **PostgreSQL**.  
-Permite realizar un **CRUD completo**, calcular automáticamente el total de la factura, y cuenta con autenticación opcional mediante **JWT**.
+Esta es una **API REST** desarrollada con **Node.js**, **Express** y **PostgreSQL**, que permite **gestionar facturas con sus detalles de productos** (estructura maestro–detalle).  
+El sistema realiza un **CRUD completo** e incluye características adicionales como:
 
----
-
-##  Características principales
-
-- **CRUD completo** para facturas (`factura`) y sus detalles (`detalle_factura`).
-- **Relación maestro–detalle** correctamente implementada con Sequelize.
-- **Cálculo automático del total** de la factura.
-- **Autenticación opcional JWT** (puedes activarla con una variable de entorno).
-- **Manejo de errores** con códigos HTTP adecuados (400, 404, 500, etc.).
-- **Control de versiones con Git**.
+- Cálculo automático del total de la factura.
+- Manejo de errores con códigos HTTP adecuados.
+- Control de versiones con **Git**.
+- (Opcional) Autenticación mediante **JWT**.
 
 ---
 
-##  Requerimientos técnicos
+##  Descripción del Proyecto
 
-- Node.js v18 o superior  
-- PostgreSQL  
-- npm (incluido con Node.js)
+La API gestiona dos entidades principales:
 
----
+- **Factura (maestro)** → contiene la información general (cliente, fecha, total).  
+- **Detalle de Factura (detalle)** → lista de productos asociados a la factura, con cantidad, precio unitario y subtotal.
 
-## Librerías utilizadas
-
-| Librería | Descripción |
-|-----------|--------------|
-| **express** | Framework para crear el servidor y los endpoints REST. |
-| **sequelize** | ORM para interactuar con la base de datos PostgreSQL. |
-| **pg** | Controlador para PostgreSQL. |
-| **dotenv** | Permite usar variables de entorno desde el archivo `.env`. |
-| **jsonwebtoken** | Implementa autenticación basada en tokens JWT. |
-| **bcrypt** | Encriptación opcional de contraseñas (si se extiende la API). |
-| **nodemon** | Herramienta de desarrollo para reinicio automático. |
+Cada factura puede tener **uno o varios detalles**, y el total se calcula automáticamente al momento de crear o actualizar una factura.
 
 ---
 
-## Instalación y configuración
+##  Tecnologías y Librerías Utilizadas
 
-### Clonar el repositorio
+| Librería / Tecnología | Descripción |
+|------------------------|-------------|
+| **Node.js** | Entorno de ejecución de JavaScript. |
+| **Express** | Framework minimalista para crear la API REST. |
+| **Sequelize** | ORM para manejar la base de datos PostgreSQL. |
+| **pg** | Driver oficial de PostgreSQL para Node.js. |
+| **dotenv** | Manejo de variables de entorno. |
+| **jsonwebtoken (JWT)** | Autenticación por tokens (opcional). |
+| **nodemon** | Reinicio automático del servidor en desarrollo. |
+
+---
+
+## Estructura de la Base de Datos
+
+### Tabla `factura`
+| Campo | Tipo | Descripción |
+|--------|------|-------------|
+| id | SERIAL PRIMARY KEY | Identificador único |
+| cliente | VARCHAR(100) | Nombre del cliente |
+| fecha | TIMESTAMP | Fecha de emisión |
+| total | NUMERIC(12,2) | Total calculado automáticamente |
+
+### Tabla `detalle_factura`
+| Campo | Tipo | Descripción |
+|--------|------|-------------|
+| id | SERIAL PRIMARY KEY | Identificador único |
+| factura_id | INTEGER (FK) | Referencia a la factura |
+| producto | VARCHAR(100) | Nombre del producto |
+| cantidad | INTEGER | Cantidad del producto |
+| precio_unitario | NUMERIC(12,2) | Precio por unidad |
+| subtotal | NUMERIC(12,2) | Calculado automáticamente (cantidad * precio_unitario) |
+
+---
+
+## Pasos de Instalación
+
+### Clonar el Repositorio
 ```bash
 git clone https://github.com/tu_usuario/facturas-api.git
 cd facturas-api
-
-# Ejemplos de uso
-ejemplo = """
-**POST /facturas**
-Crea una nueva factura con sus detalles de productos.
-
-Ejemplo de cuerpo JSON:
-{
-  "cliente": "Jose Coro",
-  "detalles": [
-    {"producto": "Teclado", "cantidad": 2, "precio_unitario": 25.00},
-    {"producto": "Mouse", "cantidad": 1, "precio_unitario": 15.00}
-  ]
-}
-
-**GET /facturas**
-Obtiene la lista de todas las facturas.
-
-**GET /facturas/1**
-Obtiene los detalles de una factura específica.
-
-**PUT /facturas/1**
-Actualiza una factura existente.
-
-**DELETE /facturas/1**
-Elimina una factura y sus detalles.
-"""
-story.append(Paragraph("Ejemplos de Uso", styles['Heading2']))
-story.append(Paragraph(ejemplo.replace("\n", "<br/>"), styles['BodyText']))
-story.append(Spacer(1, 12))
