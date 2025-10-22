@@ -52,7 +52,7 @@ Crea una nueva factura con sus detalles de productos.
 
 Ejemplo de cuerpo JSON:
 {
-  "cliente": "Juan Pérez",
+  "cliente": "Jose Coro",
   "detalles": [
     {"producto": "Teclado", "cantidad": 2, "precio_unitario": 25.00},
     {"producto": "Mouse", "cantidad": 1, "precio_unitario": 15.00}
