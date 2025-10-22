@@ -44,3 +44,33 @@ Permite realizar un **CRUD completo**, calcular automáticamente el total de la 
 ```bash
 git clone https://github.com/tu_usuario/facturas-api.git
 cd facturas-api
+
+# Ejemplos de uso
+ejemplo = """
+**POST /facturas**
+Crea una nueva factura con sus detalles de productos.
+
+Ejemplo de cuerpo JSON:
+{
+  "cliente": "Juan Pérez",
+  "detalles": [
+    {"producto": "Teclado", "cantidad": 2, "precio_unitario": 25.00},
+    {"producto": "Mouse", "cantidad": 1, "precio_unitario": 15.00}
+  ]
+}
+
+**GET /facturas**
+Obtiene la lista de todas las facturas.
+
+**GET /facturas/1**
+Obtiene los detalles de una factura específica.
+
+**PUT /facturas/1**
+Actualiza una factura existente.
+
+**DELETE /facturas/1**
+Elimina una factura y sus detalles.
+"""
+story.append(Paragraph("Ejemplos de Uso", styles['Heading2']))
+story.append(Paragraph(ejemplo.replace("\n", "<br/>"), styles['BodyText']))
+story.append(Spacer(1, 12))
